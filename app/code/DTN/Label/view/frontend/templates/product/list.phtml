@@ -1,0 +1,193 @@
+<?php
+    use Magento\Framework\App\Action\Action;
+?>
+<?php
+    $customBlock= $block->getLayout()->createBlock('DTN\Label\Block\CustomLabel');
+    $now = $customBlock->getcurrentStoreTime();
+    $_productCollection = $block->getLoadedProductCollection();
+    $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+?>
+<?php if (!$_productCollection->count()) :?>
+    <div class="message info empty"><div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div></div>
+<?php else :?>
+    <?= $block->getToolbarHtml() ?>
+    <?= $block->getAdditionalHtml() ?>
+    <?php
+    if ($block->getMode() == 'grid') {
+        $viewMode = 'grid';
+        $imageDisplayArea = 'category_page_grid';
+        $showDescription = false;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    } else {
+        $viewMode = 'list';
+        $imageDisplayArea = 'category_page_list';
+        $showDescription = true;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+    }
+    /**
+     * Position for actions regarding image size changing in vde if needed
+     */
+    $pos = $block->getPositioned();
+    ?>
+    <div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
+        <ol class="products list items product-items">
+            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php foreach ($_productCollection as $_product) : 
+                $data = $_product->getData();
+                $regularPrice = $data['price'];
+            ?>
+            <li class="item product product-item">
+                <div class="product-item-info" data-container="product-<?= /* @noEscape */ $viewMode ?>">
+                    <?php
+                    $productImage = $block->getImage($_product, $imageDisplayArea);
+                    if ($pos != null) {
+                        $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                            . 'top:' . $productImage->getHeight() . 'px;"';
+                    }
+                    ?>
+                    <?php
+                    echo $_product->getAttributeText('country_of_manufacture');
+                    //echo $customBlock->test();echo ' ';
+                        // $database_datetime = $data['created_at'];
+                        // // Create a date/time object - TimeZone is UTC
+                        // $dt = new DateTime($database_datetime, new DateTimeZone('UTC'));
+
+                        // // // Now change to user local date/time based on user timezone
+                        // $dt->setTimezone(new DateTimeZone('America/New_York'));
+                        // echo $dt->format('Y-m-d H:i:s');
+                    ?>
+                    <div class = "custom_label">
+                    <!-- sale label & discount label -->
+                        <?php
+                            if(isset($data['special_price']) && $data['special_price'] < $data['price']) {
+                                $specialPrice = $data['special_price'];
+                                $discount = 100 - round(($specialPrice/$regularPrice)*100);
+                                if(isset($data['special_from_date']) && isset($data['special_to_date'])) {
+                                    $specialFrom = $data['special_from_date'];
+                                    $specialTo = $data['special_to_date'];
+                                    $now = $customBlock->getcurrentStoreTime();
+                                    if (strtotime($now) >= strtotime($specialFrom) && strtotime($now) <= strtotime($specialTo)) {
+                                        $dayOfSale = date('d',strtotime($specialTo)) - date('d',strtotime($now));
+                                        if ($dayOfSale === 1) {
+                                            echo '<div class = "custom_discount"> Sale '.$discount.' % only today</div>';
+                                        } else {
+                                            echo '<div class = "custom_discount"> Sale '.$discount.' % '.$dayOfSale.' day</div>';
+                                        }
+                                    }
+                                } else {
+                                    echo '<div class = "custom_discount"> Sale '.$discount.' % </div>';
+                                }
+                            } else {
+                                echo '<div style="margin-top:60px;"></div>';
+                            }
+                        ?>
+                    <!-- new label -->
+                    <?php 
+                        if(isset($data['news_from_date']) && isset($data['news_to_date'])) {
+                            $newFrom = $data['news_from_date'];
+                            $newTo = $data['news_to_date'];
+                            $now = $customBlock->getcurrentStoreTime();
+                            if (strtotime($now) >= strtotime($newFrom) && strtotime($now) <= strtotime($newTo)) {
+                                echo $customBlock->getLabel()['New'];
+                            }
+                        } else {
+                            echo '<div style="margin-top:60px;"></div>';
+                        }
+                    ?>
+                    </div>
+                    <div>
+                        <!-- product image -->
+                        <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                        class="product photo product-item-photo"
+                        tabindex="-1">
+                            <?= $productImage->toHtml() ?>
+                        </a>
+                    </div>
+                    <div class="product details product-item-details">
+                        <?php
+                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                        ?>
+                        <strong class="product name product-item-name">
+                            <a class="product-item-link"
+                               href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
+                                <?= $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+                            </a>
+                            <!-- freeshipping label -->
+                            <div style="display:flex">
+                                <?php if (isset($data['special_price']) && $data['special_price'] < $data['price']) : ?>
+                                    <?php if (strtotime($now) >= strtotime($specialFrom) && strtotime($now) <= strtotime($specialTo)) : ?>
+                                            <p class="_regular_price"><?php echo number_format($regularPrice,2).'$'?></p><span>
+                                            <p class="_discount_price"><?php echo number_format($data['final_price'],2).'$'?></p></span>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <?php if(isset($data['price']) && $data['price'] > 30.000000) :?>
+                                    <div class = "fs_label" ><?php echo $customBlock->getLabel()['FreeShipping']?></div>
+                                <?php endif; ?>
+                            </div>
+                        </strong>
+                        <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
+                        <?= $block->getProductPrice($_product) ?>
+                        <?= $block->getProductDetailsHtml($_product) ?>
+                        <div class="product-item-inner">
+                            <div class="product actions product-item-actions"<?= strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : '' ?>>
+                                <div class="actions-primary"<?= strpos($pos, $viewMode . '-primary') ? $block->escapeHtmlAttr($position) : '' ?>>
+                                    <?php if ($_product->isSaleable()) :?>
+                                        <?php $postParams = $block->getAddToCartPostParams($_product); ?>
+                                        <form data-role="tocart-form"
+                                              data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
+                                              action="<?= $block->escapeUrl($postParams['action']) ?>"
+                                              method="post">
+                                            <input type="hidden"
+                                                   name="product"
+                                                   value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
+                                            <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>"
+                                                   value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                            <?= $block->getBlockHtml('formkey') ?>
+                                            <button type="submit"
+                                                    title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                                    class="action tocart primary">
+                                                <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                            </button>
+                                        </form>
+                                    <?php else :?>
+                                        <?php if ($_product->isAvailable()) :?>
+                                            <div class="stock available"><span><?= $block->escapeHtml(__('In stock')) ?></span></div>
+                                        <?php else :?>
+                                            <div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                                <div data-role="add-to-links" class="actions-secondary"<?= strpos($pos, $viewMode . '-secondary') ? $block->escapeHtmlAttr($position) : '' ?>>
+                                    <?php if ($addToBlock = $block->getChildBlock('addto')) :?>
+                                        <?= $addToBlock->setProduct($_product)->getChildHtml() ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php if ($showDescription) :?>
+                                <div class="product description product-item-description">
+                                    <?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                    <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                                       title="<?= /* @noEscape */ $_productNameStripped ?>"
+                                       class="action more"><?= $block->escapeHtml(__('Learn More')) ?></a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+    <?= $block->getToolbarHtml() ?>
+    <?php if (!$block->isRedirectToCartEnabled()) :?>
+        <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {
+                    "product_sku": "<?= $block->escapeJs($_product->getSku()) ?>"
+                }
+            }
+        }
+        </script>
+    <?php endif; ?>
+<?php endif; ?>

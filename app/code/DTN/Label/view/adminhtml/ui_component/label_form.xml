@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">     
+            <item name="provider" xsi:type="string">label_form.label_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">General Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <!-- Mapping Data  with Ui component -->
+    <settings>
+        <!-- Adding Save and Delete and other button at here -->
+        <buttons>
+            <button name="save" class="DTN\Label\Block\Adminhtml\Label\SaveButton"/>
+            <button name="back" class="DTN\Label\Block\Adminhtml\Label\BackButton"/>
+            <button name="reset" class="DTN\Label\Block\Adminhtml\Label\ResetButton"/>
+        </buttons>
+        <namespace>label_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>label_form.label_form_data_source</dep>
+        </deps>
+    </settings>
+    <!-- define Data source Name-->
+    <!-- source name formar == UIComponentFilename_data_source -->
+    <dataSource name="label_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <!--Save Url -->
+            <submitUrl path="dtn/label/save"/>
+        </settings>
+        <!-- Declare Data provide Php class and it user defined Class-->
+        <dataProvider class="DTN\Label\Ui\Label\DataProvider" 
+                      name="label_form_data_source">
+            <settings>
+                <requestFieldName>label_id</requestFieldName>
+                <primaryFieldName>label_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+      <settings>
+            <label/>
+      </settings>
+      <!-- First Field Should be Primary key -->
+        <field name="label_id" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">label_form</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <dataScope>label_id</dataScope>
+            </settings>
+        </field>
+        
+        <htmlContent name="html_content">
+            <argument name="block" xsi:type="object">DTN\Label\Block\Adminhtml\LabelOption</argument>
+        </htmlContent>
+        
+        <field name="image">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="source" xsi:type="string">label</item>
+                    <item name="label" xsi:type="string" translate="true">Image</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="formElement" xsi:type="string">fileUploader</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="previewTmpl" xsi:type="string">DTN_Label/image_preview</item>
+                    <item name="maxFileSize" xsi:type="number">2097152</item>
+                    <item name="required" xsi:type="boolean">false</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="dtn/label/upload"/>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataScope>image</dataScope>
+            </settings>
+        </field>
+        
+        <field name="name">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">
+                    DTN\Label\Model\Config\Source\LabelType
+                </item>
+                <item name="config" xsi:type="array">
+                   <item name="dataType" xsi:type="string">text</item>
+                   <item name="label" translate="true" xsi:type="string">Label Type</item>
+                   <item name="formElement" xsi:type="string">select</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataScope>name</dataScope>
+            </settings>
+        </field>
+
+        <field name="label_position">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">
+                    DTN\Label\Model\Config\Source\LabelPosition
+                </item>
+                <item name="config" xsi:type="array">
+                   <item name="dataType" xsi:type="string">text</item>
+                   <item name="label" translate="true" xsi:type="string">Label Position</item>
+                   <item name="formElement" xsi:type="string">select</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <dataScope>label_position</dataScope>
+            </settings>
+        </field>
+
+        <field name="label_text_size" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">label_form</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>number</dataType>
+                <label translate="true">Label Text Size</label>
+                <dataScope>label_text_size</dataScope>
+            </settings>
+        </field>                             
+        <field name="advance_setting" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <item name="source" xsi:type="string">label_form</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Advance Setting/Css:</label>
+                <dataScope>advance_setting</dataScope>
+            </settings>
+        </field>
+    </fieldset>    
+</form>

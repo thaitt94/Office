@@ -1,0 +1,44 @@
+<form method="post" action="<?= $block->update()?>">
+    <div class="control">Department
+        <select name="department_id">
+            <option>---Choose Department---</option>
+            <?php foreach ($block->getDepartment() as $value): ?>
+            <option 
+            <?php echo $selected = ($block->editRecord()['department_id']=== $value['entity_id']) ? 'selected' : '' ?> 
+                value="<?php echo $value['entity_id'];?>" >
+                <?php echo $value['name'];?>   
+            </option>
+            <?php endforeach; ?>
+        </select>
+    </div><br>
+
+    <div class="control">Email
+        <input type="email" name="email" value="<?php echo $block->editRecord()['email']?>">
+    </div><br>
+
+    <div class="control">First Name
+        <input type="text" name="firstname" class="input-text" value="<?php echo $block->editRecord()['firstname']?>" >
+    </div><br>
+
+    <div class="control">Last Name
+        <input type="text" name="lastname" class="input-text" value="<?php echo $block->editRecord()['lastname']?>" >
+    </div><br>
+
+    <div class="control">DOB
+        <input type="text" name="dob" class="input-text disable" value="<?php echo $block->editRecord()['dob']?>" >
+    </div><br>
+
+    <div class="control">Working Date
+        <input type="text" name="workingdate" class="input-text" value="<?php echo $block->editRecord()['workingdate']?>">
+    </div><br>
+
+    <div class="control">Salary
+        <input type="text" name="salary" class="input-text" value="<?php echo $block->editRecord()['salary']?>">
+    </div><br>
+    <input type="hidden" name="employee_id" value="<?php echo $block->editRecord()['employee_id']; ?>">
+
+    <div class="control">
+        <input type="submit" name="edit" value="Save Change" class="action submit primary">
+    </div>
+    
+</form>

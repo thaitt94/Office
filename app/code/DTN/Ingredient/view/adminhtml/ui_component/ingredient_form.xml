@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">     
+            <item name="provider" xsi:type="string">ingredient_form.ingredient_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">General Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <!-- Mapping Data  with Ui component -->
+    <settings>
+        <!-- Adding Save and Delete and other button at here -->
+        <buttons>
+            <button name="save" class="DTN\Ingredient\Block\Adminhtml\Ingredient\SaveButton"/>
+            <button name="back" class="DTN\Ingredient\Block\Adminhtml\Ingredient\BackButton"/>
+            <button name="reset" class="DTN\Ingredient\Block\Adminhtml\Ingredient\ResetButton"/>
+        </buttons>
+        <namespace>ingredient_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>ingredient_form.ingredient_form_data_source</dep>
+        </deps>
+    </settings>
+    <!-- define Data source Name-->
+    <!-- source name formar == UIComponentFilename_data_source -->
+    <dataSource name="ingredient_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <!--Save Url -->
+            <submitUrl path="dtn/ingredient/save"/>
+        </settings>
+        <!-- Declare Data provide Php class and it user defined Class-->
+        <dataProvider class="DTN\Ingredient\Ui\Ingredient\DataProvider" 
+                      name="ingredient_form_data_source">
+            <settings>
+                <requestFieldName>ingredient_id</requestFieldName>
+                <primaryFieldName>ingredient_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+      <settings>
+            <label/>
+      </settings>
+      <!-- First Field Should be Primary key -->
+      
+        <field name="ingredient_id" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ingredient_form</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <dataScope>ingredient_id</dataScope>
+            </settings>
+        </field>  
+        <field name="name" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <item name="source" xsi:type="string">ingredient_form</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Name</label>
+                <dataScope>name</dataScope>
+            </settings>
+        </field>
+
+        <field name="description" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <item name="source" xsi:type="string">ingredient_form</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Desciption</label>
+                <dataScope>description</dataScope>
+            </settings>
+        </field>
+
+        <field name="image">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="source" xsi:type="string">ingredient</item>
+                    <item name="label" xsi:type="string" translate="true">Image</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="formElement" xsi:type="string">fileUploader</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="previewTmpl" xsi:type="string">DTN_Ingredient/image_preview</item>
+                    <item name="maxFileSize" xsi:type="number">2097152</item>
+                    <item name="required" xsi:type="boolean">false</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="dtn/ingredient/upload"/>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataScope>image</dataScope>
+            </settings>
+        </field>                              
+    </fieldset>    
+</form>

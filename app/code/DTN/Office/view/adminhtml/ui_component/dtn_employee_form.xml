@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">     
+            <item name="provider" xsi:type="string">dtn_employee_form.dtn_employee_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">General Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <!-- Mapping Data  with Ui component -->
+    <settings>
+        <!-- Adding Save and Delete and other button at here -->
+        <buttons>
+            <button name="save" class="DTN\Office\Block\Adminhtml\Employee\Edit\SaveButton"/>
+            <!-- <button name="delete" class="DTN\Office\Block\Adminhtml\Department\Edit\DeleteButton"/> -->
+            <button name="back" class="DTN\Office\Block\Adminhtml\Employee\Edit\BackButton"/>
+            <button name="reset" class="DTN\Office\Block\Adminhtml\Employee\Edit\ResetButton"/>
+            <button name="save_and_continue" class="DTN\Office\Block\Adminhtml\Employee\Edit\SaveAndContinueButton"/>
+        </buttons>
+        <namespace>dtn_employee_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>dtn_employee_form.dtn_employee_form_data_source</dep>
+        </deps>
+    </settings>
+    <!-- define Data source Name-->
+    <!-- source name formar == UIComponentFilename_data_source -->
+    <dataSource name="dtn_employee_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <!--Save Url -->
+            <submitUrl path="dtn/employee/save"/>
+        </settings>
+        <!-- Declare Data provide Php class and it user defined Class-->
+        <dataProvider class="DTN\Office\Ui\Employee\DataProvider" 
+                      name="dtn_employee_form_data_source">
+            <settings>
+                <!-- Url parameter name for getting  which corresponding to Db 
+                table primary
+                -->
+                <requestFieldName>employee_id</requestFieldName>
+                <primaryFieldName>employee_id</primaryFieldName><!-- Db table primary key -->
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <!-- Add Field to Edit Form -->
+    <!-- FieldSet name is user Defined -->
+    <fieldset name="general">
+      <settings>
+            <label/>
+      </settings>
+      <!-- First Field Should be Primary key -->
+      
+        <field name="employee_id" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">dtn_employee_form</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <dataScope>employee_id</dataScope>
+            </settings>
+        </field>
+
+        <field name="department_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">
+                    DTN\Office\Model\Config\Source\Department
+                </item>
+                <item name="config" xsi:type="array">
+                   <item name="dataType" xsi:type="string">text</item>
+                   <item name="label" translate="true" xsi:type="string">Department</item>
+                   <item name="formElement" xsi:type="string">select</item>
+                   <!-- <item name="disabled" xsi:type="boolean">true</item> -->
+                </item>
+            </argument>
+        </field>
+
+        <field name="email" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <item name="source" xsi:type="string">dtn_employee_form</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>email</dataType>
+                <label translate="true">Email</label>
+                <dataScope>email</dataScope>
+            </settings>
+        </field>
+
+        <field name="firstname" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <item name="source" xsi:type="string">dtn_employee_form</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">First Name</label>
+                <dataScope>firstname</dataScope>
+            </settings>
+        </field>
+
+        <field name="lastname" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <item name="source" xsi:type="string">dtn_employee_form</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Last Name</label>
+                <dataScope>lastname</dataScope>
+            </settings>
+        </field>
+
+        <field name="dob" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <!-- <item name="formElement" xsi:type="string">date</item> -->
+                    <item name="source" xsi:type="string">dtn_employee_form</item>
+                    <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>date</dataType>
+                <label translate="true">DOB</label>
+                <dataScope>dob</dataScope>
+            </settings>
+        </field>
+
+        <field name="workingdate" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <item name="source" xsi:type="string">dtn_employee_form</item>
+                    <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>date</dataType>
+                <label translate="true">Working Date</label>
+                <dataScope>workingdate</dataScope>
+            </settings>
+        </field>
+
+        <field name="salary" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <item name="source" xsi:type="string">dtn_employee_form</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Salary</label>
+                <dataScope>salary</dataScope>
+            </settings>
+        </field>
+
+        <field name="image">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="source" xsi:type="string">employee</item>
+                    <item name="label" xsi:type="string" translate="true">Avatar</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="formElement" xsi:type="string">fileUploader</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="previewTmpl" xsi:type="string">DTN_Office/image-preview</item>
+                    <item name="required" xsi:type="boolean">false</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="dtn/employee/upload"/>
+                    </item>
+                </item>
+            </argument>
+        </field>
+                               
+    </fieldset>    
+</form>

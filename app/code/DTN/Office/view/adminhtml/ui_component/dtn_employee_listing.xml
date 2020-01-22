@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file should be same as uiComponent name at layout file-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    
+    <argument name="context" xsi:type="configurableObject">
+        <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\Context</argument>
+        <!--Important element -->
+        <argument name="namespace" xsi:type="string">dtn_employee_listing</argument>
+        <!-- this should be same as the file name or uicomponentname -->
+    </argument>
+    
+    <!-- Define data provider Name and spinner name and some button -->
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">dtn_employee_listing.dtn_employee_listing_data_source</item>
+
+            <item name="deps" xsi:type="string">dtn_employee_listing.dtn_employee_listing_data_source</item>
+            <!-- the format here is uicomponentfile name.datasourcename -->
+        </item>
+        <!-- spinner is uicomponentfile NAME -->
+        <item name="spinner" xsi:type="string">dtn_employee_listing_columns</item>
+  
+        <!-- ADD new button -->
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add New Employee</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item>
+            </item>
+        </item>
+    </argument>
+    
+    <!-- Declare Data source details -->
+    <!-- dataSource name is uicomponentfileMName_datasourcename -->
+    <dataSource name="dtn_employee_listing_data_source">
+        <!-- this is data source name, this is used at many places -->
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
+            
+            <!-- dataSource name is uicomponentfileMName.datasourcename -->
+            
+            <argument name="name" xsi:type="string">dtn_employee_listing_data_source</argument>
+            
+            <!-- Put your Database table Primary key -->
+            <argument name="primaryFieldName" xsi:type="string">employee_id</argument>
+            
+            <!-- it can be user define -->
+            <argument name="requestFieldName" xsi:type="string">employee_id</argument>
+            
+            <!-- the field used in ajax url's of grid. just define this as id -->
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">employee_id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters"></filters>
+        <exportButton name="export_button"/>
+        <massaction name="listing_massaction">
+           
+        </massaction>
+        <paging name="listing_paging"/>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="dtn/employee/massDelete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete Employee</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you wan't to delete selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+    </listingToolbar>
+
+    <!-- Same as spinner name-->
+    <columns name="dtn_employee_listing_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="storageConfig" xsi:type="array">
+                    <item name="provider" xsi:type="string">dtn_employee_listing.dtn_employee_listing.listing_top.bookmarks</item>
+                    <item name="namespace" xsi:type="string">current</item>
+                </item>
+                <item name="editorConfig" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">dtn_employee_listing.dtn_employee_listing.dtn_employee_listing_columns.ids</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                    <item name="indexField" xsi:type="string">employee_id</item>
+                    <item name="clientConfig" xsi:type="array">
+                        <item name="saveUrl" xsi:type="url" path="dtn/employee/inlineEdit"/>
+                        <item name="validateBeforeSave" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">dtn_employee_listing.dtn_employee_listing.dtn_employee_listing_columns_editor</item>
+                        <item name="target" xsi:type="string">startEdit</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                            <item name="1" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">dtn_employee_listing.dtn_employee_listing.listing_top.bookmarks</item>
+                        <item name="root" xsi:type="string">columns.${ $.index }</item>
+                        <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <!-- this is columns section name, used above in spinner -->
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- Same as Data source config indexField -->
+                    <item name="indexField" xsi:type="string">employee_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>  
+        <!-- Adding colmn to grid -->
+        
+        <column name="employee_id" >
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">Employee Id</label>
+            </settings>
+        </column>
+        <column name="name" >
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">Department</label>
+            </settings>
+        </column>  
+         <column name="email" >
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">Email</label>
+            </settings>
+        </column>
+         <column name="firstname" >
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">First Name</label>
+            </settings>
+        </column> 
+        <column name="lastname" >
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">Last Name</label>
+            </settings>
+        </column> 
+        <column name="dob" >
+            <settings>
+                <filter>text</filter>
+                <dataType>date</dataType>
+                <label translate="true">Date Of Birth</label>
+            </settings>
+        </column> 
+        <column name="workingdate" >
+            <settings>
+                <filter>text</filter>
+                <dataType>date</dataType>
+                <label translate="true">Working Date</label>
+            </settings>
+        </column>
+        <column name="salary" >
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">Salary</label>
+            </settings>
+        </column>
+        <column name="image" class="DTN\Office\Ui\Listing\Columns\Image">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/thumbnail</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="altField" xsi:type="string">title</item>
+                    <item name="has_preview" xsi:type="string">1</item>
+                    <item name="label" xsi:type="string" translate="true">Avatar</item>
+                </item>
+            </argument>
+        </column>
+        <!--Add action column to Ui grid, Add Edit and Delete links from Here-->   
+        <actionsColumn name="actions" class="DTN\Office\Ui\Listing\Columns\EmployeeActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="draggable" xsi:type="boolean">false</item>
+                    <item name="indexField" xsi:type="string">employee_id</item>
+                    <item name="align" xsi:type="string">right</item>
+                    <item name="label" xsi:type="string" translate="true">Actions</item>
+                    <item name="filterable" xsi:type="boolean">false</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </actionsColumn>                     
+    </columns>
+   
+</listing>

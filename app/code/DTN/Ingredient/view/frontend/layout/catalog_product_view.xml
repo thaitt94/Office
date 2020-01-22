@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<body>
+    <referenceContainer name="product.info.social">
+        <block class="DTN\Ingredient\Block\Product\View\Ingredient"
+            name="ingrdient"
+            template="DTN_Ingredient::ingredient.phtml"
+            after="-">
+        </block>
+    </referenceContainer>
+</body>

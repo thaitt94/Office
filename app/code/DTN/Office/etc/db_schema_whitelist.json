@@ -1,0 +1,30 @@
+{
+    "dtn_office_department": {
+        "column": {
+            "entity_id": true,
+            "name": true,
+            "leader": true,
+            "images": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "dtn_office_employee_entity": {
+        "column": {
+            "employee_id": true,
+            "department_id": true,
+            "email": true,
+            "firstname": true,
+            "lastname": true,
+            "dob": true,
+            "workingdate": true,
+            "salary": true,
+            "image": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_68D2A0A3B1ABA5DF09F6FD7548CC95EB": true
+        }
+    }
+}

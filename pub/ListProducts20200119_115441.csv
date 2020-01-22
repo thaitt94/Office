@@ -1,0 +1,2 @@
+Id,SKU,Name
+1,$product->getSku(),$product->getName()

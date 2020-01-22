@@ -1,0 +1,140 @@
+<form method="post" action="<?= $block->addEmployee()?>">
+    <div class="_mainForm">
+        <div class="_leftForm">
+            <div class="control">
+                <p>Department</p>
+                <select name="department_id">
+                    <option>---Choose Department---</option>
+                    <?php 
+                        $dp = $block->getDepartment();
+                        foreach ($dp as $value): ?>
+                    <option value="<?php echo $value['entity_id'];?>">
+                        <?php echo $value['name'];?>   
+                    </option>
+                    <?php endforeach; ?>
+                </select>
+            </div><br>
+
+            <div class="control">
+                <p>Email</p>
+                <input type="email" name="email" placeholder="email" required><br>
+            </div><br>
+
+            <div class="control">
+                <p>First Name</p>
+                <input type="text" name="firstname" class="input-text" placeholder="firstname" required>
+            </div><br>
+
+        </div>
+
+        <div class="_centerForm">
+            <div class="control">
+                <p>Last Name</p>
+                <input type="text" name="lastname" class="input-text" placeholder="lastname" required>
+            </div><br>
+            <div class="_dob">
+                <p>DOB</p>
+                <input type="date" name="dob" class="input-text" placeholder="y/m/d" required>
+            </div><br>
+            <div class="_wd">
+                <p>Working Date</p>
+                <input type="date" name="workingdate" class="input-text" placeholder="y/m/d" required>
+            </div><br>
+
+        </div>
+
+        <div class="_rightForm">
+            <div class="_salary">
+                <p>Salary</p>
+                <input type="number" name="salary" class="input-text" placeholder="salary" required>
+            </div><br>
+
+            <div class="_btn">
+                <input type="submit" name="edit" value="Add Employee" class="action submit primary" >
+            </div>
+        </div>
+    </div>
+</form>
+
+<br>
+<!-- search form -->
+<form method="post" action="<?php $block->getEmployee();?>">
+    <div class="_searchForm">
+        <div class="_right">
+            <select name="e_salary">
+                <option >No filter</option>
+                <option value="dob_1">Employee was born in january</option>
+                <option value="between">Employee join in October</option>
+                <option value="w_y">Employee more than 1 year working</option>
+                <option value="salary">Salary more than 10tr</option>
+                <option value="less">Salary less than 10tr</option>
+                <option value="It">IT staff</option>
+            </select>
+        </div><br>
+
+        <div class="_s_btn">
+            <input type="submit" name="search" value="Search" class="action submit primary" >
+        </div>
+    </div>
+</form>
+<br>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+            <th>Employee ID</th>
+            <th>Department</th>
+			<th>Full Name</th>
+			<th>Email</th>
+			<th>DOB</th>
+            <th>Age</th>
+			<th>Working Date Started</th>
+            <th>Salary</th>
+            <th style="text-align: center;">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+
+	<?php
+        $employees = $block->getEmployee();
+        if(!empty($employees)) :
+        foreach ($employees as $employee) : 
+    ?>    
+    <tr>
+        <td><?php echo $employee['employee_id'] ?></td>
+        <td>
+            <?php
+                foreach ($dp as $value) :
+                    if($employee['department_id'] === $value->getId()):
+                        echo $value->getName();
+                    endif;
+                endforeach;  
+            ?>      
+        </td>
+        <td><?php echo $employee['lastname'].' '.$employee['firstname'] ?></td>
+        <td><?php echo $employee['email'] ?></td>
+        <td><?php echo $employee['dob'] ?></td>
+        <td>
+            <?php
+                $dob = new DateTime($employee['dob']);
+                $now = new DateTime();
+                $age = $now->diff($dob);
+                echo $age->y;
+            ?>
+        </td>
+        <td><?php echo $employee['workingdate'] ?></td>
+        <td><?php echo $employee['salary'].'M' ?></td>
+        <td>
+            <a class="action primary" href="<?= $block->delete().'/id/'.$employee['employee_id'] ?>">Move</a>
+            <a class="action primary" href="<?= $block->edit().'/id/'.$employee['employee_id'] ?>">Update</a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+    <?php else : ?>
+        <p>No record had found.</p>
+    <?php endif; ?>
+    </tbody>
+</table>
+<br>
+<?php if ($block->getPagerHtml()): ?>
+    <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+<?php endif ?>

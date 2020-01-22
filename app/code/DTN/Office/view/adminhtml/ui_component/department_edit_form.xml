@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">     
+            <item name="provider" xsi:type="string">department_edit_form.department_edit_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">General Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <!-- Mapping Data  with Ui component -->
+    <settings>
+        <!-- Adding Save and Delete and other button at here -->
+        <buttons>
+            <button name="save" class="DTN\Office\Block\Adminhtml\Department\Edit\SaveButton"/>
+            <!-- <button name="delete" class="DTN\Office\Block\Adminhtml\Department\Edit\DeleteButton"/> -->
+            <button name="back" class="DTN\Office\Block\Adminhtml\Department\Edit\BackButton"/>
+            <button name="reset" class="DTN\Office\Block\Adminhtml\Department\Edit\ResetButton"/>
+            <button name="save_and_continue" class="DTN\Office\Block\Adminhtml\Department\Edit\SaveAndContinueButton"/>
+        </buttons>
+        <namespace>department_edit_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>department_edit_form.department_edit_form_data_source</dep>
+        </deps>
+    </settings>
+    <!-- define Data source Name-->
+    <!-- source name formar == UIComponentFilename_data_source -->
+    <dataSource name="department_edit_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <!--Save Url -->
+            <submitUrl path="dtn/department/save"/>
+        </settings>
+        <!-- Declare Data provide Php class and it user defined Class-->
+        <dataProvider class="DTN\Office\Ui\Department\DataProvider" 
+                      name="department_edit_form_data_source">
+            <settings>
+                <!-- Url parameter name for getting  which corresponding to Db 
+                table primary
+                -->
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName><!-- Db table primary key -->
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <!-- Add Field to Edit Form -->
+    <!-- FieldSet name is user Defined -->
+    <fieldset name="general">
+      <settings>
+            <label/>
+      </settings>
+      <!-- First Field Should be Primary key -->
+      
+        <field name="entity_id" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">department_edit_form</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <dataScope>id</dataScope>
+            </settings>
+        </field>  
+        <field name="name" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <item name="source" xsi:type="string">department_edit_form</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Department Name</label>
+                <dataScope>name</dataScope>
+            </settings>
+        </field>
+
+        <field name="leader" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- source is user defined -->
+                    <item name="source" xsi:type="string">department_edit_form</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Department Leader</label>
+                <dataScope>leader</dataScope>
+            </settings>
+        </field>
+
+        <field name="images">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="source" xsi:type="string">department</item>
+                    <item name="label" xsi:type="string" translate="true">Image</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="formElement" xsi:type="string">fileUploader</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="previewTmpl" xsi:type="string">DTN_Office/image-preview</item>
+                    <item name="required" xsi:type="boolean">false</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="dtn/department/upload"/>
+                    </item>
+                </item>
+            </argument>
+        </field>
+                               
+    </fieldset>    
+</form>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="dtn_office_department" resource="default" engine="innodb" comment="Dtn Office Department Table">
+        <column xsi:type="smallint" name="entity_id" padding="6" unsigned="false" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="64" comment="Name"/>
+        <column xsi:type="varchar" name="leader" nullable="false" length="64" comment="Leader"/>
+        <column xsi:type="text" name="images" comment="Images"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+
+    <!-- dtn_office_employee_entity -->
+    <table name="dtn_office_employee_entity" resource="default" engine="innodb" comment="Dtn Office Employee Table">
+        <column name="employee_id" xsi:type="smallint" padding="6" unsigned="false" nullable="false" identity="true" comment="Employee Id"/>
+        <column name="department_id" xsi:type="smallint" padding="6" unsigned="false" nullable="false" identity="false" comment="Department Id"/>
+        <column name="email" xsi:type="varchar" length="64" comment="Email"/>
+        <column name="firstname" xsi:type="varchar" length="64" comment="Firstname"/>
+        <column name="lastname" xsi:type="varchar" length="64" comment="Lastname"/>
+        <column name="dob" xsi:type="date" comment="Dob"/>
+        <column name="salary" xsi:type="varchar" length="64" comment="Salary"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="employee_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="DTN_OFFICE_EMPLOYEE_ENTITY_DEPARTMENT_ID_DTN_OFFICE_DEPARTMENT_ENTITY_ID" table="dtn_office_employee_entity" column="department_id" referenceTable="dtn_office_department" referenceColumn="entity_id" />
+    </table>
+</schema>

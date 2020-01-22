@@ -1,0 +1,15 @@
+<?php 
+    $title = '<h4>Ingredient:</h4>';
+    if ($block->getCurrentattribute()): echo $title;
+?>
+
+<div style="display: flex;">
+<?php foreach($block->getIngredientById() as $value ) : ?>
+    <div style = "margin-right: 20px;">
+        <p style ="text-indent:16px"><?php echo ($value['name']); ?></p>
+        <img src="<?php echo $block->getBaseUrl().'pub/media/dtn/tmp/ingredient/'.$value['image']?>" width="70" height="70">
+    </div>
+<?php endforeach; ?>
+</div>
+
+<?php endif; ?>

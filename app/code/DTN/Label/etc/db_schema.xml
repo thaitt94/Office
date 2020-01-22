@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="product_label" resource="default" engine="innodb" comment="Label Product Table">
+        <column xsi:type="smallint" name="label_id" padding="6" unsigned="false" nullable="false" identity="true" comment="Label ID"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="64" comment="Name"/>
+        <column xsi:type="text" name="label_type" comment="Label Type"/>
+        <column xsi:type="text" name="image" comment="Image"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="label_id"/>
+        </constraint>
+    </table>
+</schema>

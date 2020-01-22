@@ -1,0 +1,6 @@
+<form method="post" action="<?= $block->SaveEditRecord();?>" >
+	<lable>Department Name</lable><br>
+	<input type="text" name="name" value="<?php echo $block->getEditRecord()['name']; ?>">
+	<input type="hidden" name="entity_id" value="<?php echo $block->getEditRecord()['entity_id']; ?>"><br>
+	<button type="submit" class="action submit primary">Save Change</button>
+</form>

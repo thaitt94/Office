@@ -1,0 +1,57 @@
+<?php $labelType = array('image','text only'); ?>
+<div>
+    <label><strong>Label Type : </strong></type>
+    <select name="label_type" id ="label_type" required >
+        <option value="">Choose type</option>
+        <?php foreach($labelType as $value) :?>
+            <option value="<?php echo $value ?>"><?php echo $value ?></option>
+        <?php endforeach; ?>
+    </select>
+    <br><br>
+    <div id="render"></div>
+</div>
+
+<script>
+    require(['jquery', 'jquery/ui'], function($){
+        var Data;
+        $("#label_type").change(function() {
+            var labeltype = $("#label_type").serializeArray()[0]['value'];
+            if (labeltype === 'text only') {
+                $("#render").html('<strong>Label Text </strong><input type="text">');
+            } else {
+                if (labeltype === 'image') {
+                    $("#render").html('<strong>Label Image </strong><input type="file">');
+                }
+            }
+        });
+    });
+</script>
+
+<!-- <script type="text/javascript">
+require([
+    "jquery",
+    "mage/mage"
+],function($) {
+    $(document).ready(function() {
+        $('#label_type').click(
+            'validation',
+            { 
+                submitHandler: function(form) {
+                    $.ajax({
+                        url: "dtn/label/save",
+                        data: $('#label_type').serializeArray(),
+                        type: 'POST',
+                        dataType: 'json',
+                        beforeSend: function() {
+                            // show some loading icon
+                        },
+                        success: function(data) {
+                            console.log(data);
+                        }
+                    });
+                }
+            }
+        );
+    });
+});
+</script> -->

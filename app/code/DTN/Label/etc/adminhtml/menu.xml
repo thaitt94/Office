@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add 
+        id="DTN_Label::main_menu" 
+        title="Label" 
+        module="DTN_Label" 
+        sortOrder="99" 
+        parent="Magento_Catalog::catalog" 
+        resource="DTN_Label::label" />
+
+        <add 
+        id="DTN_Label::label" 
+        title="Product Labels" 
+        module="DTN_Label" 
+        sortOrder="99" 
+        parent="DTN_Label::main_menu" 
+        resource="DTN_Label::label"
+        action="dtn/label/index" />
+    </menu>
+</config>

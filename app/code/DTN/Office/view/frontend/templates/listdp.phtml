@@ -1,0 +1,61 @@
+<form method="post" action="<?= $block->addNew()?>">
+    <div class="control">
+        <input type="text" name="name" autofocus placeholder="department name" required ><br>
+    </div><br>
+    <div class="control">
+        <input type="submit" name="edit" value="Add Department" class="action submit primary">
+    </div><br>
+    <div class="">
+        <a href="<?php echo $block->getBaseUrl().'office/employee/index'?>" target="blank" class="action submit primary">Employee List</a>
+    </div>
+</form>
+
+<br>
+<!-- search form -->
+<form method="post" action="<?php $block->getDepartment();?>">
+    <div class="_searchForm">
+        <div class="_right">
+            <select name="_department">
+                <option >No filter</option>
+                <option value="equal" >Department id equal to 26</option>
+                <option value="I" >Department start with I</option>
+            </select>
+        </div><br>
+
+        <div class="_s_btn">
+            <input type="submit" name="search" value="Search" class="action submit primary" >
+        </div>
+    </div>
+</form>
+<br>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Department</th>
+            <th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+
+	
+	<?php
+
+	foreach ($block->getDepartment() as $department):?>    
+    <tr>
+        <td><?= $department->getId() ?></td>
+        <td><?= $department->getName(); ?></td>
+        <td>
+            <a class="action primary" href="<?= $block->getBaseUrl().'office/department/delete/id/'.$department['entity_id'] ?>">Move</a>
+            <a class="action primary" href="<?= $block->getBaseUrl().'office/department/edit/id/'.$department['entity_id'] ?>">Update</a>
+        </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+<br>
+<?php if ($block->getPagerHtml()): ?>
+    <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+<?php endif ?>
+
